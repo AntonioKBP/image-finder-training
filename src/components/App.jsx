@@ -1,6 +1,8 @@
-import axios from 'axios';
+// import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+import { fetchApi } from './FetchApi';
 
 import { useState, useEffect } from 'react';
 import { Button } from './Button/Button';
@@ -14,8 +16,8 @@ import { Toast } from './Toast/ToastContainer';
 import { Modal } from './Modal/Modal';
 import { ModalInner } from './Modal/ModalInner';
 
-const KEY = '31349139-c34332f5cc1455d1f889740ec';
-const BASE_URL = 'https://pixabay.com/api/?';
+// const KEY = '31349139-c34332f5cc1455d1f889740ec';
+// const BASE_URL = 'https://pixabay.com/api/?';
 
 export const App = () => {
   const [image, setImage] = useState([]);
@@ -42,27 +44,47 @@ export const App = () => {
       return;
     }
 
-    const fetchData = async () => {
-      setIsLoading(true);
-      try {
-        const { data } = await axios.get(
-          `${BASE_URL}q=${search}&page=${page}&key=${KEY}&image_type=photo&orientation=horizontal&per_page=12`
-        );
+    try {
+      fetchApi(search, page).then(res =>
+        res.json().then(data => {
+          setImageHits(data);
+          setIsLoading(true);
 
-        setImage(prev => [...prev, ...data.hits]);
-        setImageHits(data);
+          setImage(prev => [...prev, ...data.hits]);
+          if (page === 1) {
+            toast.success(`We found ${data.total} images`);
+          }
+        })
+      );
+    } catch (error) {
+      setImage([]);
+      toast.error('Cannot process your request');
+    } finally {
+      setIsLoading(false);
+    }
 
-        if (page === 1) {
-          toast.success(`We found ${data.total} images`);
-        }
-      } catch (error) {
-        setImage([]);
-        toast.error('Cannot process your request');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchData();
+    // const fetchData = async () => {
+    //   setIsLoading(true);
+    //   try {
+    //     const { data } = await axios.get(
+    //       `${BASE_URL}q=${search}&page=${page}&key=${KEY}&image_type=photo&orientation=horizontal&per_page=12`
+    //     );
+
+    //     setImage(prev => [...prev, ...data.hits]);
+    //     setImageHits(data);
+
+    //     if (page === 1) {
+    //       toast.success(`We found ${data.total} images`);
+    //     }
+    //   } catch (error) {
+    //     setImage([]);
+    //     toast.error('Cannot process your request');
+    //   } finally {
+    //     setIsLoading(false);
+    //   }
+    // };
+    // fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search, page]);
 
   const toggleModal = () => {
