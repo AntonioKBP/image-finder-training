@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/image-finder-training/static/css/main.539f9cb2.css",
+    "main.js": "/image-finder-training/static/js/main.be016eaf.js",
+    "static/media/search.svg": "/image-finder-training/static/media/search.bebb1e1125833132461b3046ba7ff7ee.svg",
+    "index.html": "/image-finder-training/index.html",
+    "main.539f9cb2.css.map": "/image-finder-training/static/css/main.539f9cb2.css.map",
+    "main.be016eaf.js.map": "/image-finder-training/static/js/main.be016eaf.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.539f9cb2.css",
+    "static/js/main.be016eaf.js"
+  ]
+}
